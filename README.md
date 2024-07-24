@@ -6,20 +6,10 @@
 
 책은 신경망에 대한 기본적인 이론과 이 이론을 바탕으로 간단한 3 Laye를 구성해 보고, MNIST를 실습해 보는 내용입니다. 책 제목 그대로 신경망을 이해하기 위한 첫걸음에 좋은 책인것 같습니다.
 
-신경망 구성 내용은 아래와 같습니다.
-- 3 Layer Neural Network : Input(784) - Hidden(200) - Output(10)
-- Activation Function : Sigmoid
-- Deavtivation Function : Logit
-- Learning Rate : 0.01
-- Additional training : rotating each original by +/- 10 degrees
+위 코드를 참조하여 
+relu function vs Signoid
+Hidden_node수와 Performance 관계
+epoch과 Performance 관계
+lr와 Performance 관계를 분석해았습니다.
 
-신경망 학습
-- Mnist 학습 Data : 60000
-- 주기(epoch) : 10
-
-실행 결과
-- Mnist 테스트 Data : 10000
-- 정답 비율 출력
-- 0에 대한 Network backwards 이미지 출력
-
-performance =  0.9766 total 10000
+또한 아이패드로 적은 글씨를 test데이터 셋으로 넣었을 때 정담률을 확인해보았습니다.
