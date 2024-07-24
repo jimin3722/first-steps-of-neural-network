@@ -14,7 +14,8 @@ lr와 Performance 관계를 분석해았습니다.
 
 또한 아이패드로 적은 글씨를 test데이터 셋으로 넣었을 때 정답률을 확인해보았습니다.
 
-
+Result
+------
 
 Hidden_node수와 Performance 관계 :
 ![ep_hidden_10](https://github.com/user-attachments/assets/43017a1a-56c2-49dd-9fb7-cd818d85b8d7)
