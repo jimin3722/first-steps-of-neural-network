@@ -1,13 +1,9 @@
-# 신경망 첫걸음 Python Code
+# 신경망 첫걸음 공부 Python Code
 
-책 "신경망 첫걸음"의 Python Code입니다.
-
-책에서는 iPython notebook으로 코드를 작성하고 있고, 저자의 [Github](https://github.com/makeyourownneuralnetwork/makeyourownneuralnetwork)에서도 iPython으로 코드가 업로드 되어 있는데, 책 스터디 할때는 python3로 작성해서 테스트 해봤습니다.
-
-책은 신경망에 대한 기본적인 이론과 이 이론을 바탕으로 간단한 3 Laye를 구성해 보고, MNIST를 실습해 보는 내용입니다. 책 제목 그대로 신경망을 이해하기 위한 첫걸음에 좋은 책인것 같습니다.
-
+책 "신경망 첫걸음"의 Python Code [Github](https://github.com/makeyourownneuralnetwork/makeyourownneuralnetwork)f를 참고하였습니다.
 
 위 코드를 참조하여 
+
 relu function vs Signoid,
 
 Hidden_node수와 Performance 관계,
