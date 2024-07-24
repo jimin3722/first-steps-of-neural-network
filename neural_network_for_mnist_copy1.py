@@ -496,7 +496,7 @@ class Mnist():
 
         #print(resized_img)
 
-        cv2.imwrite(img_path[-5]+"_test.png", resized_img)
+        cv2.imwrite("test.png", resized_img)
         
         flattened_img = resized_img.reshape(-1)
 
@@ -508,42 +508,34 @@ class Mnist():
 
         label = np.argmax(outputs)
 
-        if label == int(img_path[-5]):
-            tf = "정답"
-            cnt = 1
-        if label != int(img_path[-5]):
-            tf = "오답"
-            cnt = 0
-
-        print("predict :",label,",label :",img_path[-5], " ",tf)
-
-        return cnt
+        print("label : ",label)
 
 
 def main():
 
     # pt_file_path = "/home/jimin/jss_prac/first-steps-of-neural-network/pt_file/hidden_1000_pt_ep9.npz"
     # pt_file_path = "/home/jimin/jss_prac/first-steps-of-neural-network/pt_file/hidden_400_relu_pt_ep9.npz"
-    pt_file_path = "/home/jimin/jss_prac/first-steps-of-neural-network/pt_file/hidden_1200_pt_ep9.npz"
+    pt_file_path = "/home/jimin/jss_prac/first-steps-of-neural-network/pt_file/hidden_1000_pt_ep9.npz"
 
     hidden_layer = 1
 
-    hidden_nodes = 1200
+    hidden_nodes = 400
     hidden_nodes1 = 400
     hidden_nodes2 = 400
+
+    lr = 0.01
     
     act_fun = "Signoid"
 
     if hidden_layer == 1:
-        MNIST = Mnist(input_nodes = 784, hidden_nodes = hidden_nodes, output_nodes = 10, hidden_layer = hidden_layer, act_fun = act_fun, pt_path=pt_file_path)
+        MNIST = Mnist(input_nodes = 784, hidden_nodes = hidden_nodes, output_nodes = 10, hidden_layer = hidden_layer, lr = lr, act_fun = act_fun, pt_path=pt_file_path)
     elif hidden_layer == 2:
-        MNIST = Mnist(input_nodes = 784, hidden_nodes1 = hidden_nodes1, hidden_nodes2 = hidden_nodes2, output_nodes = 10, hidden_layer = hidden_layer, act_fun = act_fun, pt_path=pt_file_path)
+        MNIST = Mnist(input_nodes = 784, hidden_nodes1 = hidden_nodes1, hidden_nodes2 = hidden_nodes2, output_nodes = 10, hidden_layer = hidden_layer, lr = lr, act_fun = act_fun, pt_path=pt_file_path)
 
-    #mode = "test"
-    mode = "train"
+    mode = "test"
+    #mode = "train"
     #mode = "custum"
     #mode = "resume"
-    #mode = "lr"
 
     if mode == "test":
         
@@ -551,43 +543,21 @@ def main():
     
     elif mode == "custum":
         
+        img_path = "/home/jimin/jss_prac/first-steps-of-neural-network/test_imgs/9.png"
         mode = "white_background"
-
-        cnt = 0
-        
-        for i in range(10):
-            
-            img_path = "/home/jimin/jss_prac/first-steps-of-neural-network/test_imgs/" + str(i) + ".png"
-            tf = MNIST.custum_img_test(img_path=img_path, mode=mode)
-            cnt += tf
-
-        print("정답률 : ", cnt/10*100,"%")
+        MNIST.custum_img_test(img_path=img_path, mode=mode)
     
     elif mode == "train":
 
-        name = "hidden_1200"
+        name = "hidden_400_lr_0.01"
         epochs = 10
         
         MNIST.train(epochs = epochs, name = name)
 
     elif mode == "resume":
 
-        MNIST.resume(additional_epoch = 1)
+        MNIST.resume(additional_epoch = 15)
 
-    elif mode == "lr":
-        
-        for i in range(10):
-            
-            lr = 0.01 + (i+1)*0.01
-            hidden_nodes = 200
-
-            MNIST = Mnist(input_nodes = 784, hidden_nodes = hidden_nodes, output_nodes = 10, hidden_layer = hidden_layer, act_fun = act_fun, lr = lr, pt_path=pt_file_path)
-            name = "hidden_200" + "_lr_" + str(lr)
-            MNIST.train(epochs = 10, name = name)
-
-
-
-# 에폭이 학습 퍼포먼스에 미치는 영향 테스트
 def epochs_test():
 
     file_path = "/home/jimin/jss_prac/first-steps-of-neural-network/pt_file/hidden_400_pt_ep"
@@ -619,11 +589,9 @@ def epochs_test():
     plt.xlabel('Epochs')
     plt.ylabel('Performance')
     plt.grid(True)
-    plt.xticks(np.arange(min(epochs), max(epochs)+1, 100))  # 최소값부터 최대값까지 10 단위로 눈금 설정
     plt.legend()
     plt.show()
 
-# 히든노드 개수가 학습 퍼포먼스에 미치는 영향 테스트
 def hidden_node_test():
 
     file_path = "/home/jimin/jss_prac/first-steps-of-neural-network/pt_file/hidden_"
@@ -635,17 +603,17 @@ def hidden_node_test():
     epochs = []
     performances = []
 
-    for i in range(12):
+    for i in range(9):
 
         hidden_nodes = (i+1)*100
         
-        pt_file_path = file_path + str(hidden_nodes) + "_pt_ep9.npz"
+        pt_file_path = file_path + str(hidden_nodes) + "_pt_ep9.npy"
         
         MNIST = Mnist(input_nodes = 784, hidden_nodes = hidden_nodes, output_nodes = 10, hidden_layer = hidden_layer, act_fun = act_fun, pt_path=pt_file_path)
 
         performance = MNIST.test()
 
-        epochs.append((i+1)*100)
+        epochs.append(i+1)
         performances.append(performance)
     
     # 그래프 그리기
@@ -654,46 +622,6 @@ def hidden_node_test():
     plt.title('Performance vs. Hidden_nodes')
     plt.xlabel('Hidden_nodes')
     plt.ylabel('Performance')
-    plt.xticks(np.arange(min(epochs), max(epochs)+1, 100))  # 최소값부터 최대값까지 10 단위로 눈금 설정
-
-    plt.grid(True)
-    plt.legend()
-    plt.show()
-
-# lr이 학습 퍼포먼스에 미치는 영향 테스트
-def lr_test():
-
-    file_path = "/home/jimin/jss_prac/first-steps-of-neural-network/pt_file/hidden_200_lr_"
-
-    hidden_layer = 1
-    hidden_nodes = 200
-
-    act_fun = "Signoid"
-
-    epochs = []
-    performances = []
-
-    for i in range(11):
-
-        lr = (i+1)*0.01
-        
-        pt_file_path = file_path + str(lr) + "_pt_ep9.npz"
-        
-        MNIST = Mnist(input_nodes = 784, hidden_nodes = hidden_nodes, output_nodes = 10, hidden_layer = hidden_layer, act_fun = act_fun, pt_path=pt_file_path)
-
-        performance = MNIST.test()
-
-        epochs.append(lr)
-        performances.append(performance)
-    
-    # 그래프 그리기
-    plt.figure(figsize=(8, 5))
-    plt.plot(epochs, performances, marker='o', linestyle='-', color='b', label='performance')
-    plt.title('Performance vs. Learningrate')
-    plt.xlabel('Learningrate')
-    plt.ylabel('Performance')
-    plt.xticks(np.arange(min(epochs), max(epochs)+0.01, 0.01))  # 최소값부터 최대값까지 10 단위로 눈금 설정
-
     plt.grid(True)
     plt.legend()
     plt.show()
@@ -701,7 +629,6 @@ def lr_test():
 
 
 if __name__ == "__main__":
-    main()
-    #hidden_node_test()
-    #lr_test()
+    hidden_node_test()
+    #epochs_test()
 
